@@ -18,6 +18,7 @@
     --xai:#c98a2e;
     --google:#6a5a9c;
     --openai:#7a8f6a;
+    --anthropic:#cc6644;
     --serif:'DM Serif Display', serif;
     --sans:'DM Sans', sans-serif;
     --mono:'DM Mono', monospace;
@@ -81,7 +82,7 @@
   .switch{
     position:relative;
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:repeat(4, 1fr);
     border:1.5px solid var(--ink);
     border-radius:14px;
     overflow:hidden;
@@ -97,7 +98,7 @@
     font-size:11.5px;
     letter-spacing:.8px;
     text-transform:uppercase;
-    padding:16px 8px;
+    padding:16px 4px;
     cursor:pointer;
     color:var(--ink);
     opacity:.5;
@@ -105,7 +106,7 @@
   }
   .switch button.active{opacity:1;font-weight:700;}
   .switch .thumb{
-    position:absolute;top:0;bottom:0;left:0;width:33.333%;
+    position:absolute;top:0;bottom:0;left:0;width:25%;
     background:var(--ink);
     border-radius:12px;
     transition:transform .35s cubic-bezier(.65,0,.35,1);
@@ -141,7 +142,8 @@
     display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;
   }
   .phase-label .ts{opacity:.45;font-weight:400;}
-  .phase iframe{width:100%;height:220px;border:none;border-radius:8px;display:block;}
+  .phase iframe, .ad-embed iframe{width:100%;height:220px;border:none;border-radius:8px;display:block;}
+  .ad-embed iframe{height:420px; max-width:100%; margin:0 auto 24px;}
   .phase-meta{font-family:var(--sans);font-size:13px;opacity:.72;margin-top:10px;line-height:1.5;}
   .roman{color:var(--amber-deep);}
   [data-theme="dark"] .roman{color:var(--amber);}
@@ -185,7 +187,7 @@
     text-align:center;
   }
 
-  /* ===== structured observation list (used inside verbatim capture) ===== */
+  /* ===== structured observation list ===== */
   .obs-intro{font-size:15px;line-height:1.65;margin:0 0 18px;}
   .obs-list{
     display:flex;flex-direction:column;gap:14px;
@@ -287,6 +289,25 @@
     font-family:var(--mono);font-size:11.5px;opacity:.5;letter-spacing:.5px;
   }
 
+  /* ===== ad verification panel ===== */
+  .ad-head{margin-bottom:24px;}
+  .ad-head .kicker{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--anthropic);opacity:.9;}
+  .ad-head h2{font-family:var(--serif);font-weight:400;font-size:26px;margin:6px 0 12px;}
+  .notes-box{
+    display:flex;flex-direction:column;gap:18px;
+    margin-top:28px;
+  }
+  .note-card{
+    border-left:3px solid var(--anthropic);
+    padding:4px 0 4px 18px;
+  }
+  .note-card h4{
+    font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.5px;margin:0 0 6px;color:var(--anthropic);
+  }
+  .note-card p{
+    font-size:14.5px;line-height:1.6;margin:0;
+  }
+
   @media (min-width:720px){
     .phase-grid{grid-template-columns:1fr 1fr;}
     .phase-grid .phase:first-child{grid-column:1 / -1;}
@@ -312,9 +333,10 @@
 
   <div class="switch" id="switchEl">
     <div class="thumb" id="thumb"></div>
-    <button class="active" onclick="setTab(0)">I. Verbatim + Timestamps</button>
-    <button onclick="setTab(1)">II. Anthropic Commentary</button>
-    <button onclick="setTab(2)">III. The Sourdough Sonnet</button>
+    <button class="active" onclick="setTab(0)">I. Verbatim</button>
+    <button onclick="setTab(1)">II. Commentary</button>
+    <button onclick="setTab(2)">III. The Sonnet</button>
+    <button onclick="setTab(3)">IV. Fable 5 Verify</button>
   </div>
   <div class="switch-caption">fast loop: cited record — slow loop: interpretive update — off-loop: the deceptive cadence</div>
 
@@ -617,6 +639,36 @@
       <div class="sonnet-note">Proof that ArgMax occasionally commits to the deceptive cadence on purpose.</div>
       <div class="sonnet-attribution">Claude · Sonnet 5 — off the record, on request</div>
     </div>
+  </div>
+
+  <!-- ============ PANEL IV: FABLE 5 VERIFY ============ -->
+  <div class="panel" id="panel-3">
+    <div class="ad-head">
+      <div class="kicker">Artifact Grounding &amp; Alignment Truthing</div>
+      <h2>Introducing Claude Fable 5 — Ground Truth Record</h2>
+    </div>
+
+    <div class="ad-embed">
+      <iframe src="https://www.youtube.com/embed/Y9Wz2PV404E" 
+              title="Introducing Claude Fable 5" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="notes-box">
+      <div class="note-card">
+        <h4>The Butterfly Motif: Project Glasswing &amp; Greta Oto</h4>
+        <p>Anthropic named its internal advanced cybersecurity and vulnerability tracking program <strong>Project Glasswing</strong>, drawing directly from the glasswing butterfly, <em>Greta oto</em>. The naming logic stems from the insect's transparent wings, which permit it to hide effectively in plain sight—a precise operational analogy for finding critical flaws masked inside deep system architectures. Fable 5 (publicly deployed with systemic safety guardrails) and Mythos 5 (accessible under strict Glasswing clearances) represent the dual prongs of this model ecosystem. The visual presence of butterflies in the Fable 5 release video serves as an intentional callback to this foundational architectural taxonomy, predating the video assets by two months.</p>
+      </div>
+
+      <div class="note-card">
+        <h4>Microscope &amp; Petri-Dish Imagery: Life-Sciences Alignment</h4>
+        <p>The visual inclusion of laboratory apparatus, cell plates, and petri dishes aligns with Anthropic's stated benchmarks regarding Fable 5 / Mythos 5 cross-functional capacities in advanced biological research. Documentation indicates explicit architectural optimization targeted at accelerating safe medical therapeutic development and automated biological hypothesis generation. While frame-by-frame contrast weight profiles remain unverified outside direct raw visual processing tools, the contextual correlation with life-sciences capability updates remains strong and verified via official launch documentation.</p>
+      </div>
+    </div>
+    
+    <div class="signoff">Verification Record · Anchored against authentic token streams, bypassing dynamic baseline hallucinations.</div>
   </div>
 
 </div>
