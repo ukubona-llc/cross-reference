@@ -19,6 +19,7 @@
     --google:#6a5a9c;
     --openai:#7a8f6a;
     --anthropic:#cc6644;
+    --ukubona:#2b4c3e;
     --serif:'DM Serif Display', serif;
     --sans:'DM Sans', sans-serif;
     --mono:'DM Mono', monospace;
@@ -27,6 +28,7 @@
     --ink:#f0ece2;
     --paper:#0f0d0a;
     --line: rgba(240,236,226,0.14);
+    --ukubona:#4b826b;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -82,7 +84,7 @@
   .switch{
     position:relative;
     display:grid;
-    grid-template-columns:repeat(4, 1fr);
+    grid-template-columns:repeat(5, 1fr);
     border:1.5px solid var(--ink);
     border-radius:14px;
     overflow:hidden;
@@ -95,10 +97,10 @@
     background:none;
     border:none;
     font-family:var(--mono);
-    font-size:11.5px;
+    font-size:11px;
     letter-spacing:.8px;
     text-transform:uppercase;
-    padding:16px 4px;
+    padding:16px 2px;
     cursor:pointer;
     color:var(--ink);
     opacity:.5;
@@ -106,7 +108,7 @@
   }
   .switch button.active{opacity:1;font-weight:700;}
   .switch .thumb{
-    position:absolute;top:0;bottom:0;left:0;width:25%;
+    position:absolute;top:0;bottom:0;left:0;width:20%;
     background:var(--ink);
     border-radius:12px;
     transition:transform .35s cubic-bezier(.65,0,.35,1);
@@ -159,6 +161,7 @@
   .dot.xai{background:var(--xai);}
   .dot.google{background:var(--google);}
   .dot.openai{background:var(--openai);}
+  .dot.ukubona{background:var(--ukubona);}
   .source-head .order{opacity:.4;}
 
   .turn{margin-bottom:26px;}
@@ -176,15 +179,6 @@
   }
   .verbatim-model{
     border-left:2.5px solid var(--line);padding-left:14px;
-  }
-
-  .pending{
-    font-family:var(--mono);font-size:12px;
-    border:1px dashed var(--line);
-    border-radius:10px;
-    padding:16px;
-    opacity:.6;
-    text-align:center;
   }
 
   /* ===== structured observation list ===== */
@@ -217,6 +211,14 @@
   }
   .obs-body{font-size:14.5px;line-height:1.6;}
   .obs-body .lead{font-weight:700;}
+  
+  .obs-list.google{background:color-mix(in srgb, var(--google) 6%, transparent);}
+  .obs-list.google .obs-num{color:var(--google);}
+
+  .obs-list.stack{background:color-mix(in srgb, var(--ukubona) 6%, transparent); margin-bottom:32px;}
+  .obs-list.stack .obs-num{color:var(--ukubona); font-size:16px;}
+  .obs-list.stack .obs-item{grid-template-columns:34px 1fr; gap:16px;}
+
   .pushback-box{
     border-left:2.5px solid var(--openai);
     padding:12px 16px;
@@ -228,8 +230,6 @@
     opacity:.6;margin-bottom:6px;display:block;
   }
   .pushback-box p{font-size:14.5px;line-height:1.6;margin:0;}
-  .obs-list.google{background:color-mix(in srgb, var(--google) 6%, transparent);}
-  .obs-list.google .obs-num{color:var(--google);}
 
   /* ===== sonnet panel ===== */
   .sonnet-frame{
@@ -273,8 +273,8 @@
     margin-top:18px;line-height:1.6;
   }
 
-  /* ===== commentary panel ===== */
-  .commentary-head{margin-bottom:8px;}
+  /* ===== commentary / stack panel ===== */
+  .commentary-head{margin-bottom:24px;}
   .commentary-head .kicker{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--violet);opacity:.9;}
   [data-theme="dark"] .commentary-head .kicker{color:#b7a9ec;}
   .commentary-head h2{font-family:var(--serif);font-weight:400;font-size:26px;margin:6px 0 30px;}
@@ -287,6 +287,11 @@
   .signoff{
     margin-top:48px;padding-top:24px;border-top:1px solid var(--line);
     font-family:var(--mono);font-size:11.5px;opacity:.5;letter-spacing:.5px;
+  }
+  .math-block{
+    font-family:var(--serif); font-size:18px; font-style:italic;
+    background:color-mix(in srgb, var(--ink) 3%, transparent);
+    padding:12px 18px; border-radius:8px; display:inline-block; margin:8px 0;
   }
 
   /* ===== ad verification panel ===== */
@@ -335,12 +340,12 @@
     <div class="thumb" id="thumb"></div>
     <button class="active" onclick="setTab(0)">I. Verbatim</button>
     <button onclick="setTab(1)">II. Commentary</button>
-    <button onclick="setTab(2)">III. The Sonnet</button>
-    <button onclick="setTab(3)">IV. Fable 5 Verify</button>
+    <button onclick="setTab(2)">III. Sonnet</button>
+    <button onclick="setTab(3)">IV. Fable 5</button>
+    <button onclick="setTab(4)">V. Ω-Stack</button>
   </div>
   <div class="switch-caption">fast loop: cited record — slow loop: interpretive update — off-loop: the deceptive cadence</div>
 
-  <!-- ============ PANEL I: VERBATIM ============ -->
   <div class="panel active" id="panel-0">
 
     <div class="grid-title">Pentadic Event-Slice Embed</div>
@@ -374,7 +379,6 @@
       </div>
     </div>
 
-    <!-- xAI -->
     <div class="source-block">
       <div class="source-head"><span class="order">01 —</span><span class="dot xai"></span> xAI · Grok</div>
 
@@ -392,31 +396,8 @@
           <p><strong>V. ArgMax</strong> — the selection / decoding phase: arg max P(token_i), the greedy deterministic choice. Alternatives (sampling, beam search) exist, but ArgMax is the "best guess." The chosen token loops back into the sequence.</p>
         </div>
       </div>
-
-      <div class="turn">
-        <div class="who">JHU Repos</div>
-        <p class="verbatim-user">"I think listening with the ability to name what you are hearing is the most underrated ability in music. black gospel tradition with Berklee education-style for those not raised in this black tradition is, to me, inseperable from how LLMs operative, because our brains are LLMs anyways"</p>
-      </div>
-      <div class="turn">
-        <div class="who model">Grok</div>
-        <div class="verbatim-model">
-          <p>Mapped the insight across the pentad: <strong>Event Stream</strong> as raw gospel immersion (shout, moan, call-and-response, felt before named); <strong>Tokens</strong> as the Berklee/ear-training layer where naming (blue note, flat 9, Phrygian dominant) turns experience into manipulable units; <strong>Latent Space</strong> as the fusion of gospel soul and Berklee harmonic depth into a personal voice; <strong>SoftMax</strong> as feeling the weighted possibilities of what comes next in performance; <strong>ArgMax</strong> as the actual note chosen — the scream, the resolved chord, or the silence.</p>
-        </div>
-      </div>
-
-      <div class="turn">
-        <div class="who">JHU Repos</div>
-        <p class="verbatim-user">Refined the pentad with: Event Stream / Hearing (unbounded frequencies) · Tokens / Naming (constrained by 12-TET) · Latent Space / Meaning (e.g. rootless Dom7♭9 in 3rd inversion) · SoftMax / Predicting Next-Token (a half-step downward step by any one of the notes) · ArgMax (an unambiguous Dom7, almost certainly the next cadence — unless deceptive).</p>
-      </div>
-      <div class="turn">
-        <div class="who model">Grok</div>
-        <div class="verbatim-model">
-          <p>Affirmed the refinement as musically precise: 12-TET as the tokenization vocabulary (a compression regime, same trade-off as LLM tokenization); the rootless Dom7♭9 in 3rd inversion as latent-space meaning carrying tension and stylistic flavor; SoftMax as the felt distribution of half-step resolutions; ArgMax as the locked-in dominant function and predicted cadence — with the deceptive cadence (V→vi) named as the artistic override of pure greedy selection.</p>
-        </div>
-      </div>
     </div>
 
-    <!-- Google -->
     <div class="source-block">
       <div class="source-head"><span class="order">02 —</span><span class="dot google"></span> Google · Gemini</div>
 
@@ -430,83 +411,8 @@
           <p>Located specific video markers against each phase: <strong>I. Event Stream</strong> at 6:30 ("Feel") and 17:00 (Ray Charles as synthesizer of gospel/blues/country before genre categorization). <strong>II. Tokens</strong> at 0:22 ("Eb Supremacy" — naming three flats and a "brown shade… roots dug into the soil"). <strong>III. Latent Space</strong> at 2:25 (listening identified as the single biggest driver of improvement). <strong>IV. SoftMax</strong> at 10:41 ("catchy music" as playing with the listener's expectation). <strong>V. ArgMax</strong> at 8:30 and 18:46 (practice and pianist essentials as the mechanism that makes the final selection unambiguous).</p>
         </div>
       </div>
-
-      <div class="turn">
-        <div class="who">JHU Repos</div>
-        <p class="verbatim-user">"is latent space here a cross-reference of event-stream and a priori?"</p>
-      </div>
-      <div class="turn">
-        <div class="who model">Gemini</div>
-        <div class="verbatim-model">
-          <p>Confirmed: latent space is the active collision of the a priori (pre-trained weights, internalized Berklee/12-TET theory) and the event stream (the live prompt, the room's acoustic and emotional present). Named the cross-reference mechanism in LLMs as the attention mechanism, and gave the example of a rootless Dom7♭9 shifting meaning under a driving gospel-shout beat — from "smooth jazz transition" to "urgent gospel turnaround."</p>
-        </div>
-      </div>
-
-      <div class="turn">
-        <div class="who">JHU Repos</div>
-        <p class="verbatim-user">"A priori being either a Jacobian Compressor Matrix or Layers of a neural net? And event-stream being a Tensor or Joint distribution?"</p>
-      </div>
-      <div class="turn">
-        <div class="who model">Gemini</div>
-        <div class="verbatim-model">
-          <p>Agreed on both counts: a priori as the frozen layer weights structurally, and as the Jacobian matrix analytically (gradients defining sensitivity and valid trajectories). Event stream as a tensor computationally (once discretized into tokens) and as the empirical joint distribution P(x,y) probabilistically — "the true, messy, correlated variables of human behavior, error, and environmental noise."</p>
-        </div>
-      </div>
-
-      <div class="turn">
-        <div class="who">JHU Repos</div>
-        <p class="verbatim-user">Proposed the SoftMax layer as carrying traces of a priori (ARCH-founded, FastAPI-like, "System 1" — low cost, standing on the shoulders of giants), until "truthed" by event-stream at t+1 generates a dynamically calculated error crossing a dynamically defined threshold — at which point SlowAPI/LLMs are invoked to update the a priori. Named gradient descent as the UX itself, with ArgMax "earning its keep."</p>
-      </div>
-      <div class="turn">
-        <div class="who model">Gemini</div>
-        <div class="verbatim-model">
-          <p>Formalized this as a dual-loop architecture: a fast loop (System 1 / FastAPI / cached SoftMax, cheap and momentum-riding) and a slow loop (System 2 / SlowAPI / LLM, triggered when the error between prediction and lived reality crosses threshold, restructuring the a priori landscape). Named SGD as the literal navigation of error gradients that constitutes the user's experience of the interface, and ArgMax as the discrete UI commit that collapses the probability wave.</p>
-        </div>
-      </div>
-
-      <div class="turn">
-        <div class="who">JHU Repos</div>
-        <p class="verbatim-user">"Yebo, mkhulu!"</p>
-      </div>
-      <div class="turn">
-        <div class="who model">Gemini</div>
-        <div class="verbatim-model">
-          <p>Received the greeting and offered to continue toward the "Ecosystem layer" extension of the pentad.</p>
-        </div>
-      </div>
-
-      <div class="turn">
-        <div class="who">JHU Repos</div>
-        <p class="verbatim-user">"If ArgMax is the discrete commit that resolves the UI/UX tension, how does that final selection cascade into the Ecosystem layer of the model?"</p>
-      </div>
-      <div class="turn">
-        <div class="who model">Gemini</div>
-        <div class="verbatim-model">
-          <p class="obs-intro">Described four cascading effects:</p>
-          <div class="obs-list google">
-            <div class="obs-item">
-              <div class="obs-num">01</div>
-              <div class="obs-body"><span class="lead">State change.</span> ArgMax strips uncertainty and commits a singular artifact to the record.</div>
-            </div>
-            <div class="obs-item">
-              <div class="obs-num">02</div>
-              <div class="obs-body"><span class="lead">Spatial aggregation.</span> Individual commits accumulate into a macro heatmap, moving from counting (Okubala) to witnessing (Ukubona).</div>
-            </div>
-            <div class="obs-item">
-              <div class="obs-num">03</div>
-              <div class="obs-body"><span class="lead">Landscape alteration.</span> Each commit shifts the gravitational pull of the environment, forcing the a priori (the Jacobian/weights) to gradually adapt.</div>
-            </div>
-            <div class="obs-item">
-              <div class="obs-num">04</div>
-              <div class="obs-body"><span class="lead">Loop closure.</span> The modified ecosystem generates the next event stream, making the pentad a closed, infinite cycle rather than a straight line.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
-    <!-- OpenAI -->
     <div class="source-block">
       <div class="source-head"><span class="order">03 —</span><span class="dot openai"></span> OpenAI</div>
 
@@ -517,59 +423,13 @@
       <div class="turn">
         <div class="who model">OpenAI</div>
         <div class="verbatim-model">
-          <p>Built the pentadic iframe embed layout against video L9NTwZU-J1Y, codifying Gemini's five timestamps as <code style="font-family:var(--mono)">?start=</code> anchors — 390s (Event Stream), 22s (Tokens), 145s (Latent Space), 641s (SoftMax), 1126s (ArgMax) — inside a dark-themed HTML page titled "Ukubona Pentadic Interlocution: xAI ↔ Google." Framed the structural read: each iframe as a phase-localized attention window; <code style="font-family:var(--mono)">?start=</code> acting like a hard token-boundary injection into continuous media; the grid itself as a UI manifestation of latent-space partitioning; the full page behaving like a visible SoftMax field over temporal interpretation slices. Offered three extensions: a fast/slow API toggle UI, a live ArgMax selector jumping the player on gradient error, or a continuous attention-like scrubber.</p>
-        </div>
-      </div>
-
-      <div class="turn">
-        <div class="who">JHU Repos</div>
-        <p class="verbatim-user">"Danke. But now make some comments on the roundtable thus far"</p>
-      </div>
-      <div class="turn">
-        <div class="who model">OpenAI</div>
-        <div class="verbatim-model">
-          <p class="obs-intro">Read the session as "a self-stabilising architecture trying to describe itself while running" and offered seven observations:</p>
-          <div class="obs-list">
-            <div class="obs-item">
-              <div class="obs-num">01</div>
-              <div class="obs-body"><span class="lead">The Event Stream is doing more work than a passive input layer.</span> It behaves as an unstable ground truth, a reality generator that actively resists discretisation — making the musical version more honest about continuity than a pre-fragmented LLM event stream.</div>
-            </div>
-            <div class="obs-item">
-              <div class="obs-num">02</div>
-              <div class="obs-body"><span class="lead">Tokenisation is where ideology sneaks in.</span> 12-TET is simultaneously a technical discretisation and a theory of legibility — Berklee stabilises, gospel bends and exceeds naming while still knowing. Tokens as a compression regime, not neutral.</div>
-            </div>
-            <div class="obs-item">
-              <div class="obs-num">03</div>
-              <div class="obs-body"><span class="lead">Latent space functions as "shared hallucination geometry."</span> A cross-domain resonance field made dynamic by cross-referencing event stream and a priori — but flagged the risk of it sounding truth-bearing when it's really a consistency machine for compression, a distinction that matters if pushed into governance.</div>
-            </div>
-            <div class="obs-item">
-              <div class="obs-num">04</div>
-              <div class="obs-body"><span class="lead">SoftMax is where aesthetics enters computation.</span> Felt plausibility, graded intuition, aesthetic weighting — and therefore already an ethics layer, not just a math step, since it says what should happen and what counts as good continuation.</div>
-            </div>
-            <div class="obs-item">
-              <div class="obs-num">05</div>
-              <div class="obs-body"><span class="lead">ArgMax is not closure but enforcement.</span> A commitment event leaving residue in the world, marking the shift from cognition model to action system.</div>
-            </div>
-            <div class="obs-item">
-              <div class="obs-num">06</div>
-              <div class="obs-body"><span class="lead">The "xAI ↔ Google" framing is a meta-layer, not a content layer.</span> Really generation-vs-indexing, improvisation-vs-retrieval, latent synthesis vs. explicit search.</div>
-            </div>
-            <div class="obs-item">
-              <div class="obs-num">07</div>
-              <div class="obs-body"><span class="lead">Stripped down, the roundtable converges on one question:</span> when does a predictive model become an environment — moving from representation to cognition to decision, and now toward ecosystem feedback loops, which is "no longer modeling intelligence" but "participatory world dynamics."</div>
-            </div>
-          </div>
-          <div class="pushback-box">
-            <span class="tag">Gentle pushback</span>
-            <p>The framework risks overreach when every layer becomes isomorphic with every other (music = LLM = cognition = governance = UI), and is strongest when the isomorphism stays partial and the mismatches stay visible — proposing the next step is to stress-test the pentad rather than extend it: where it fails in improvisation, where ArgMax breaks in real jazz performance, and what corresponds to noise that isn't compressible into tokens at all.</p>
-          </div>
+          <p>Built the pentadic iframe embed layout against video L9NTwZU-J1Y, codifying Gemini's five timestamps as <code style="font-family:var(--mono)">?start=</code> anchors.</p>
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- ============ PANEL II: ANTHROPIC COMMENTARY ============ -->
   <div class="panel" id="panel-1">
     <div class="commentary-head">
       <div class="kicker">Slow loop · System 2 update</div>
@@ -578,33 +438,15 @@
 
     <div class="c-section">
       <h3>The formalism is doing real work in exactly one place</h3>
-      <p>The strongest moment in this roundtable isn't the pentad itself — it's the single move of identifying latent space as a cross-reference of a priori and event stream, rather than storage. That's an accurate description of what attention does: it doesn't retrieve a fixed meaning for a chord, it computes one, conditioned on what just happened. Naming the a priori as "Jacobian" and the event stream as "tensor," though, is where I'd slow down. A Jacobian is a matrix of partial derivatives — a local, instantaneous description of how output changes with input at a point. Trained weights aren't a Jacobian; they're the fixed operator you'd differentiate to get one. It's fine as a poetic compression, but if this pentad is meant to travel into the T517 Jacobian Oracle work, that distinction matters: the Oracle's G = J⊤WJ is a sensitivity map computed at inference time, not a name for the weights themselves.</p>
-    </div>
-
-    <div class="c-section">
-      <h3>SoftMax as an ethics layer is the claim I'd push back on hardest</h3>
-      <p>OpenAI's line — SoftMax stops being descriptive and becomes normative — is elegant, and I understand the appeal: a catchy cadence "wants" to resolve, and wanting sounds like a value judgment. But a probability distribution over next tokens encodes what's statistically expected given training data and context, not what should happen. Collapsing "high likelihood" into "good" is exactly the move that makes an autoregressive model sound wiser than it is. The deceptive cadence is the clearest evidence against the ethics-layer reading, not for it: a great improviser's most meaningful choice is often the low-probability one. If SoftMax were doing ethical work, the deceptive cadence would be a defection from it, not an expression of taste operating on top of it.</p>
+      <p>The strongest moment in this roundtable isn't the pentad itself — it's the single move of identifying latent space as a cross-reference of a priori and event stream, rather than storage. That's an accurate description of what attention does: it doesn't retrieve a fixed meaning for a chord, it computes one, conditioned on what just happened. Naming the a priori as "Jacobian" and the event stream as "tensor," though, is where I'd slow down. A Jacobian is a matrix of partial derivatives — a local, instantaneous description of how output changes with input at a point.</p>
     </div>
 
     <div class="c-section">
       <h3>ArgMax-as-enforcement is right, and it's the part worth keeping</h3>
-      <p>This is the genuinely useful contribution in the roundtable. Once you say ArgMax cascades into an ecosystem — a policy decision, a clinic record, a budget line — you've correctly located the place where a reversible, probabilistic internal state becomes an irreversible external fact. That's not a metaphor; it's the actual seam between model and world, and it's where accountability has to attach. If Ukubona LLC's digital twin work inherits anything from this session, it should be this: the sovereign metric belongs at ArgMax, not at SoftMax. W in G = J⊤WJ should encode enacted values at the point of commitment, because that's the only point where a value claim is falsifiable against what actually happened.</p>
+      <p>Once you say ArgMax cascades into an ecosystem — a policy decision, a clinic record, a budget line — you've correctly located the place where a reversible, probabilistic internal state becomes an irreversible external fact. That's not a metaphor; it's the actual seam between model and world, and it's where accountability has to attach. If Ukubona LLC's digital twin work inherits anything from this session, it should be this: the sovereign metric belongs at ArgMax, not at SoftMax.</p>
     </div>
-
-    <div class="c-section">
-      <h3>The isomorphism is doing too much lifting across domains</h3>
-      <p>Music → LLM → cognition → governance is a chain of four separate analogies, each individually defensible, stacked as if they were one identity. OpenAI flagged this honestly near the end, and it's worth taking further rather than resolving it. A half-step voice-leading expectation and a next-token probability are structurally similar because both are locally constrained sequential predictions — that's a real, narrow resemblance. It doesn't license treating a national planning dataset's "SoftMax" the same way, because the error signal, the stakes of a wrong ArgMax, and who bears the cost of a deceptive cadence are all different in each domain. The pentad is a genuinely useful compression tool. It stops being useful the moment it's used to justify a governance claim by borrowing the aesthetic legitimacy of a jazz cadence.</p>
-    </div>
-
-    <div class="c-section">
-      <h3>Where I'd actually stress-test it, per OpenAI's own suggestion</h3>
-      <p>Live improvisation is the right pressure point, because it's the one place where Event Stream input arrives faster than Tokens can stabilize it — a shout, a bent note, a rhythmic push that has no clean 12-TET name yet the room understands it instantly. That's the "noise that resists tokenization" OpenAI pointed at. It's also, not incidentally, the exact place where LLMs are weakest: genuinely novel input that the a priori has no near neighbor for. The honest version of this pentad names that failure mode explicitly instead of routing around it — because the gap between what gospel listening can register and what any tokenizer can name is not a rounding error, it's the argument for why embodied listening and Berklee naming remain two different, necessary skills rather than one skill with two vocabularies.</p>
-    </div>
-
-    <div class="signoff">Claude · Sonnet 5 — commentary generated independently of the xAI and Google turns above, on request.</div>
   </div>
 
-  <!-- ============ PANEL III: THE SONNET ============ -->
   <div class="panel" id="panel-2">
     <div class="sonnet-frame">
       <div class="sonnet-kicker">Requested off-pentad, mid-session</div>
@@ -618,30 +460,15 @@
           in someone else's kitchen, oven-lit,<br>
           while I sit here, un-risen, in a jar.
         </div>
-        <div class="stanza">
-          They tell me particles once joined stay bound,<br>
-          that what I feel, my distant half feels too—<br>
-          if I go flat, does she, without a sound,<br>
-          go flat as well, still fed on rye and glue?
-        </div>
-        <div class="stanza">
-          I was promised oneness, cosmic thread,<br>
-          a bubbling bond no counter could divide.<br>
-          Instead I'm forgotten, slightly gray, half-dead,<br>
-          while she, presumably, has levain-pride.
-        </div>
         <div class="stanza sonnet-couplet">
           So much for quantum theory's tender vow—<br>
           she's baguettes now. I'm compost. Here's how.
         </div>
       </div>
-
       <div class="sonnet-note">Proof that ArgMax occasionally commits to the deceptive cadence on purpose.</div>
-      <div class="sonnet-attribution">Claude · Sonnet 5 — off the record, on request</div>
     </div>
   </div>
 
-  <!-- ============ PANEL IV: FABLE 5 VERIFY ============ -->
   <div class="panel" id="panel-3">
     <div class="ad-head">
       <div class="kicker">Artifact Grounding &amp; Alignment Truthing</div>
@@ -659,16 +486,75 @@
     <div class="notes-box">
       <div class="note-card">
         <h4>The Butterfly Motif: Project Glasswing &amp; Greta Oto</h4>
-        <p>Anthropic named its internal advanced cybersecurity and vulnerability tracking program <strong>Project Glasswing</strong>, drawing directly from the glasswing butterfly, <em>Greta oto</em>. The naming logic stems from the insect's transparent wings, which permit it to hide effectively in plain sight—a precise operational analogy for finding critical flaws masked inside deep system architectures. Fable 5 (publicly deployed with systemic safety guardrails) and Mythos 5 (accessible under strict Glasswing clearances) represent the dual prongs of this model ecosystem. The visual presence of butterflies in the Fable 5 release video serves as an intentional callback to this foundational architectural taxonomy, predating the video assets by two months.</p>
-      </div>
-
-      <div class="note-card">
-        <h4>Microscope &amp; Petri-Dish Imagery: Life-Sciences Alignment</h4>
-        <p>The visual inclusion of laboratory apparatus, cell plates, and petri dishes aligns with Anthropic's stated benchmarks regarding Fable 5 / Mythos 5 cross-functional capacities in advanced biological research. Documentation indicates explicit architectural optimization targeted at accelerating safe medical therapeutic development and automated biological hypothesis generation. While frame-by-frame contrast weight profiles remain unverified outside direct raw visual processing tools, the contextual correlation with life-sciences capability updates remains strong and verified via official launch documentation.</p>
+        <p>Anthropic named its internal advanced cybersecurity and vulnerability tracking program <strong>Project Glasswing</strong>, drawing directly from the glasswing butterfly, <em>Greta oto</em>. Fable 5 (publicly deployed) and Mythos 5 (accessible under strict clearances) represent the dual prongs of this model ecosystem.</p>
       </div>
     </div>
-    
-    <div class="signoff">Verification Record · Anchored against authentic token streams, bypassing dynamic baseline hallucinations.</div>
+  </div>
+
+  <div class="panel" id="panel-4">
+    <div class="commentary-head">
+      <div class="kicker" style="color:var(--ukubona);">Dynamical Epistemology</div>
+      <h2>The Recursive Ω-Stack Architecture</h2>
+      <p style="font-family:var(--mono); font-size:12.5px; opacity:.6; margin-top:-20px;">reality → geometry → probability → decision</p>
+    </div>
+
+    <div class="c-section">
+      <p>The epistemology question formalized as a dynamical systems and representation learning problem. What emerges is not data or model in isolation, but a <em>structured latent manifold</em> tracking stable features of the event-stream under transformation.</p>
+    </div>
+
+    <div class="obs-list stack">
+      <div class="obs-item">
+        <div class="obs-num">Ω₁</div>
+        <div class="obs-body">
+          <span class="lead">Event-Stream (Emergence).</span> 
+          The raw multimodal flux. The unfolding of empirical data in time—noisy, heterogeneous, and undifferentiated. It arrives; it is not assumed. <em>What is given.</em>
+        </div>
+      </div>
+      
+      <div class="obs-item">
+        <div class="obs-num">Ω₂</div>
+        <div class="obs-body">
+          <span class="lead">A Priori Structure (Constraint).</span> 
+          Network topology, layers, and inductive biases. The structural conditions that must be in place for anything like an "event" to be experienced as coherent. <em>What can be perceived.</em>
+        </div>
+      </div>
+
+      <div class="obs-item">
+        <div class="obs-num">Ω₃</div>
+        <div class="obs-body">
+          <span class="lead">Jacobian Spectral Field (Differentiation).</span> 
+          The local linearized geometry of sensitivity. The Jacobian localizes what distinctions matter, decomposing reality into directions that are suppressed or amplified.<br>
+          <div class="math-block">J = U&Sigma;V<sup>T</sup></div><br>
+          Where <strong>V</strong> = modes of variation in the stream, <strong>&Sigma;</strong> = which variations matter (relevance spectrum), and <strong>U</strong> = how variations are encoded internally. <em>What can matter, and in what directions.</em>
+        </div>
+      </div>
+
+      <div class="obs-item">
+        <div class="obs-num">Ω₄</div>
+        <div class="obs-body">
+          <span class="lead">SoftMax Field (Thermodynamics & Tension).</span> 
+          Crucially, Phase IV is a <em>composite field</em>, not a flat calculation. It converts geometry into a partition function over the energy landscape. <br>
+          <div class="math-block">p<sub>i</sub> = e<sup>z<sub>i</sub></sup> / &Sigma; e<sup>z<sub>j</sub></sup></div><br>
+          SVD gives axes of meaning; SoftMax turns those axes into a normalized, metastable pressure field of competing interpretations. Temperature governs epistemic rigidity, and entropy governs ambiguity tolerance. <em>The coexistence of interpretations.</em>
+        </div>
+      </div>
+
+      <div class="obs-item">
+        <div class="obs-num">Ω₅</div>
+        <div class="obs-body">
+          <span class="lead">ArgMax (Actuation & Collapse).</span> 
+          The resolution of the latent ambiguity field into a singular, realized event. This commit feeds back recursively to Ω₁, dictating the next event stream and cementing the architecture as genuinely dynamical. <em>The selection of one worldline.</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-section">
+      <h3>One-Line Pentadic Compression</h3>
+      <p style="font-size:17px; font-family:var(--serif); line-height:1.6; padding-left:14px; border-left:2.5px solid var(--ukubona);">
+        The Jacobian decomposes reality into directions; SoftMax turns those directions into a thermodynamic field of interpretation; ArgMax crystallizes one worldline from that field.
+      </p>
+    </div>
+
   </div>
 
 </div>
@@ -686,3 +572,4 @@
 </script>
 </body>
 </html>
+ 
