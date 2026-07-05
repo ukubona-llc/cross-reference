@@ -185,6 +185,50 @@
     text-align:center;
   }
 
+  /* ===== structured observation list (used inside verbatim capture) ===== */
+  .obs-intro{font-size:15px;line-height:1.65;margin:0 0 18px;}
+  .obs-list{
+    display:flex;flex-direction:column;gap:14px;
+    margin:0 0 18px;
+    padding:16px 18px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:color-mix(in srgb, var(--openai) 6%, transparent);
+  }
+  .obs-item{
+    display:grid;
+    grid-template-columns:30px 1fr;
+    gap:12px;
+    align-items:start;
+  }
+  .obs-item + .obs-item{
+    padding-top:14px;
+    border-top:1px solid var(--line);
+  }
+  .obs-num{
+    font-family:var(--mono);
+    font-size:13px;
+    font-weight:700;
+    color:var(--openai);
+    opacity:.9;
+    padding-top:1px;
+  }
+  .obs-body{font-size:14.5px;line-height:1.6;}
+  .obs-body .lead{font-weight:700;}
+  .pushback-box{
+    border-left:2.5px solid var(--openai);
+    padding:12px 16px;
+    background:color-mix(in srgb, var(--openai) 5%, transparent);
+    border-radius:0 10px 10px 0;
+  }
+  .pushback-box .tag{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;
+    opacity:.6;margin-bottom:6px;display:block;
+  }
+  .pushback-box p{font-size:14.5px;line-height:1.6;margin:0;}
+  .obs-list.google{background:color-mix(in srgb, var(--google) 6%, transparent);}
+  .obs-list.google .obs-num{color:var(--google);}
+
   /* ===== commentary panel ===== */
   .commentary-head{margin-bottom:8px;}
   .commentary-head .kicker{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--violet);opacity:.9;}
@@ -373,7 +417,25 @@
       <div class="turn">
         <div class="who model">Gemini</div>
         <div class="verbatim-model">
-          <p>Described four cascading effects: (1) State change — ArgMax strips uncertainty and commits a singular artifact to the record; (2) Spatial aggregation — individual commits accumulate into a macro heatmap, moving from counting (Okubala) to witnessing (Ukubona); (3) Landscape alteration — each commit shifts the gravitational pull of the environment, forcing the a priori (the Jacobian/weights) to gradually adapt; (4) Loop closure — the modified ecosystem generates the next event stream, making the pentad a closed, infinite cycle rather than a straight line.</p>
+          <p class="obs-intro">Described four cascading effects:</p>
+          <div class="obs-list google">
+            <div class="obs-item">
+              <div class="obs-num">01</div>
+              <div class="obs-body"><span class="lead">State change.</span> ArgMax strips uncertainty and commits a singular artifact to the record.</div>
+            </div>
+            <div class="obs-item">
+              <div class="obs-num">02</div>
+              <div class="obs-body"><span class="lead">Spatial aggregation.</span> Individual commits accumulate into a macro heatmap, moving from counting (Okubala) to witnessing (Ukubona).</div>
+            </div>
+            <div class="obs-item">
+              <div class="obs-num">03</div>
+              <div class="obs-body"><span class="lead">Landscape alteration.</span> Each commit shifts the gravitational pull of the environment, forcing the a priori (the Jacobian/weights) to gradually adapt.</div>
+            </div>
+            <div class="obs-item">
+              <div class="obs-num">04</div>
+              <div class="obs-body"><span class="lead">Loop closure.</span> The modified ecosystem generates the next event stream, making the pentad a closed, infinite cycle rather than a straight line.</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -401,7 +463,41 @@
       <div class="turn">
         <div class="who model">OpenAI</div>
         <div class="verbatim-model">
-          <p>Read the session as "a self-stabilising architecture trying to describe itself while running" and offered seven observations. (1) The Event Stream is doing more work than a passive input layer — it behaves as an unstable ground truth, a reality generator that actively resists discretisation, making the musical version more honest about continuity than a pre-fragmented LLM event stream. (2) Tokenisation is where ideology sneaks in: 12-TET is simultaneously a technical discretisation and a theory of legibility, with Berklee stabilising and gospel bending/exceeding naming while still knowing — tokens as a compression regime, not neutral. (3) Latent space functions as "shared hallucination geometry," a cross-domain resonance field made dynamic by cross-referencing event stream and a priori — but flagged the risk of it sounding truth-bearing when it's really a consistency machine for compression, a distinction that matters if pushed into governance. (4) SoftMax is where aesthetics enters computation — felt plausibility, graded intuition, aesthetic weighting — and therefore already an ethics layer, not just a math step, since it says what should happen and what counts as good continuation. (5) ArgMax is not closure but enforcement: a commitment event leaving residue in the world, marking the shift from cognition model to action system. (6) The "xAI ↔ Google" framing is a meta-layer, not a content layer — really generation-vs-indexing, improvisation-vs-retrieval, latent synthesis vs. explicit search. (7) Stripped down, the roundtable converges on one question: when does a predictive model become an environment — moving from representation to cognition to decision, and now toward ecosystem feedback loops, which is "no longer modeling intelligence" but "participatory world dynamics." Closed with a gentle pushback: the framework risks overreach when every layer becomes isomorphic with every other (music = LLM = cognition = governance = UI), and is strongest when the isomorphism stays partial and the mismatches stay visible — proposing the next step is to stress-test the pentad rather than extend it: where it fails in improvisation, where ArgMax breaks in real jazz performance, and what corresponds to noise that isn't compressible into tokens at all.</p>
+          <p class="obs-intro">Read the session as "a self-stabilising architecture trying to describe itself while running" and offered seven observations:</p>
+          <div class="obs-list">
+            <div class="obs-item">
+              <div class="obs-num">01</div>
+              <div class="obs-body"><span class="lead">The Event Stream is doing more work than a passive input layer.</span> It behaves as an unstable ground truth, a reality generator that actively resists discretisation — making the musical version more honest about continuity than a pre-fragmented LLM event stream.</div>
+            </div>
+            <div class="obs-item">
+              <div class="obs-num">02</div>
+              <div class="obs-body"><span class="lead">Tokenisation is where ideology sneaks in.</span> 12-TET is simultaneously a technical discretisation and a theory of legibility — Berklee stabilises, gospel bends and exceeds naming while still knowing. Tokens as a compression regime, not neutral.</div>
+            </div>
+            <div class="obs-item">
+              <div class="obs-num">03</div>
+              <div class="obs-body"><span class="lead">Latent space functions as "shared hallucination geometry."</span> A cross-domain resonance field made dynamic by cross-referencing event stream and a priori — but flagged the risk of it sounding truth-bearing when it's really a consistency machine for compression, a distinction that matters if pushed into governance.</div>
+            </div>
+            <div class="obs-item">
+              <div class="obs-num">04</div>
+              <div class="obs-body"><span class="lead">SoftMax is where aesthetics enters computation.</span> Felt plausibility, graded intuition, aesthetic weighting — and therefore already an ethics layer, not just a math step, since it says what should happen and what counts as good continuation.</div>
+            </div>
+            <div class="obs-item">
+              <div class="obs-num">05</div>
+              <div class="obs-body"><span class="lead">ArgMax is not closure but enforcement.</span> A commitment event leaving residue in the world, marking the shift from cognition model to action system.</div>
+            </div>
+            <div class="obs-item">
+              <div class="obs-num">06</div>
+              <div class="obs-body"><span class="lead">The "xAI ↔ Google" framing is a meta-layer, not a content layer.</span> Really generation-vs-indexing, improvisation-vs-retrieval, latent synthesis vs. explicit search.</div>
+            </div>
+            <div class="obs-item">
+              <div class="obs-num">07</div>
+              <div class="obs-body"><span class="lead">Stripped down, the roundtable converges on one question:</span> when does a predictive model become an environment — moving from representation to cognition to decision, and now toward ecosystem feedback loops, which is "no longer modeling intelligence" but "participatory world dynamics."</div>
+            </div>
+          </div>
+          <div class="pushback-box">
+            <span class="tag">Gentle pushback</span>
+            <p>The framework risks overreach when every layer becomes isomorphic with every other (music = LLM = cognition = governance = UI), and is strongest when the isomorphism stays partial and the mismatches stay visible — proposing the next step is to stress-test the pentad rather than extend it: where it fails in improvisation, where ArgMax breaks in real jazz performance, and what corresponds to noise that isn't compressible into tokens at all.</p>
+          </div>
         </div>
       </div>
     </div>
