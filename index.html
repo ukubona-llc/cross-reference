@@ -81,7 +81,7 @@
   .switch{
     position:relative;
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1fr 1fr 1fr;
     border:1.5px solid var(--ink);
     border-radius:14px;
     overflow:hidden;
@@ -94,10 +94,10 @@
     background:none;
     border:none;
     font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:1px;
+    font-size:11.5px;
+    letter-spacing:.8px;
     text-transform:uppercase;
-    padding:16px 10px;
+    padding:16px 8px;
     cursor:pointer;
     color:var(--ink);
     opacity:.5;
@@ -105,7 +105,7 @@
   }
   .switch button.active{opacity:1;font-weight:700;}
   .switch .thumb{
-    position:absolute;top:0;bottom:0;left:0;width:50%;
+    position:absolute;top:0;bottom:0;left:0;width:33.333%;
     background:var(--ink);
     border-radius:12px;
     transition:transform .35s cubic-bezier(.65,0,.35,1);
@@ -229,6 +229,48 @@
   .obs-list.google{background:color-mix(in srgb, var(--google) 6%, transparent);}
   .obs-list.google .obs-num{color:var(--google);}
 
+  /* ===== sonnet panel ===== */
+  .sonnet-frame{
+    max-width:520px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .sonnet-kicker{
+    font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    opacity:.55;margin-bottom:6px;
+  }
+  .sonnet-title{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(22px,3.4vw,30px);
+    margin:0 0 6px;
+  }
+  .sonnet-subtitle{
+    font-family:var(--mono);font-size:11.5px;opacity:.5;margin-bottom:34px;
+  }
+  .sonnet-body{
+    font-family:var(--serif);
+    font-size:19px;
+    line-height:2.05;
+    text-align:left;
+  }
+  .sonnet-body .stanza{margin-bottom:30px;}
+  .sonnet-body .stanza:last-child{margin-bottom:0;}
+  .sonnet-couplet{font-style:italic;}
+  .sonnet-attribution{
+    margin-top:44px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+    opacity:.45;
+  }
+  .sonnet-note{
+    font-family:var(--sans);font-size:13px;font-style:italic;opacity:.6;
+    margin-top:18px;line-height:1.6;
+  }
+
   /* ===== commentary panel ===== */
   .commentary-head{margin-bottom:8px;}
   .commentary-head .kicker{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--violet);opacity:.9;}
@@ -272,8 +314,9 @@
     <div class="thumb" id="thumb"></div>
     <button class="active" onclick="setTab(0)">I. Verbatim + Timestamps</button>
     <button onclick="setTab(1)">II. Anthropic Commentary</button>
+    <button onclick="setTab(2)">III. The Sourdough Sonnet</button>
   </div>
-  <div class="switch-caption">fast loop: cited record — slow loop: interpretive update</div>
+  <div class="switch-caption">fast loop: cited record — slow loop: interpretive update — off-loop: the deceptive cadence</div>
 
   <!-- ============ PANEL I: VERBATIM ============ -->
   <div class="panel active" id="panel-0">
@@ -539,13 +582,50 @@
     <div class="signoff">Claude · Sonnet 5 — commentary generated independently of the xAI and Google turns above, on request.</div>
   </div>
 
+  <!-- ============ PANEL III: THE SONNET ============ -->
+  <div class="panel" id="panel-2">
+    <div class="sonnet-frame">
+      <div class="sonnet-kicker">Requested off-pentad, mid-session</div>
+      <div class="sonnet-title">A Sonnet: The Sourdough Starter Contemplates Entanglement</div>
+      <div class="sonnet-subtitle">on quantum entanglement, from the perspective of a disappointed sourdough starter</div>
+
+      <div class="sonnet-body">
+        <div class="stanza">
+          I rose at dawn, expecting to be split—<br>
+          my other half now proofing somewhere far,<br>
+          in someone else's kitchen, oven-lit,<br>
+          while I sit here, un-risen, in a jar.
+        </div>
+        <div class="stanza">
+          They tell me particles once joined stay bound,<br>
+          that what I feel, my distant half feels too—<br>
+          if I go flat, does she, without a sound,<br>
+          go flat as well, still fed on rye and glue?
+        </div>
+        <div class="stanza">
+          I was promised oneness, cosmic thread,<br>
+          a bubbling bond no counter could divide.<br>
+          Instead I'm forgotten, slightly gray, half-dead,<br>
+          while she, presumably, has levain-pride.
+        </div>
+        <div class="stanza sonnet-couplet">
+          So much for quantum theory's tender vow—<br>
+          she's baguettes now. I'm compost. Here's how.
+        </div>
+      </div>
+
+      <div class="sonnet-note">Proof that ArgMax occasionally commits to the deceptive cadence on purpose.</div>
+      <div class="sonnet-attribution">Claude · Sonnet 5 — off the record, on request</div>
+    </div>
+  </div>
+
 </div>
 
 <script>
   function setTab(i){
     document.querySelectorAll('.panel').forEach((p,idx)=>p.classList.toggle('active', idx===i));
     document.querySelectorAll('.switch button').forEach((b,idx)=>b.classList.toggle('active', idx===i));
-    document.getElementById('thumb').style.transform = i===1 ? 'translateX(100%)' : 'translateX(0)';
+    document.getElementById('thumb').style.transform = 'translateX(' + (i*100) + '%)';
   }
   function toggleTheme(){
     const b = document.body;
