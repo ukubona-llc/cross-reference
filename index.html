@@ -94,7 +94,7 @@
   .switch button{
     position:relative;
     z-index:2;
-    background:none;    
+    background:none;
     border:none;
     font-family:var(--mono);
     font-size:11px;
@@ -214,6 +214,9 @@
   
   .obs-list.google{background:color-mix(in srgb, var(--google) 6%, transparent);}
   .obs-list.google .obs-num{color:var(--google);}
+
+  .obs-list.openai{background:color-mix(in srgb, var(--openai) 6%, transparent);}
+  .obs-list.openai .obs-num{color:var(--openai);}
 
   .obs-list.stack{background:color-mix(in srgb, var(--ukubona) 6%, transparent); margin-bottom:32px;}
   .obs-list.stack .obs-num{color:var(--ukubona); font-size:16px;}
@@ -473,6 +476,7 @@
     <div class="ad-head">
       <div class="kicker">Artifact Grounding &amp; Alignment Truthing</div>
       <h2>Introducing Claude Fable 5 — Ground Truth Record</h2>
+      <div style="font-family:var(--mono); font-size:11px; opacity:.5; margin-top:-6px;">corrected &amp; re-sourced — 5 July 2026, replacing an earlier conflation caught in Tab II's spirit</div>
     </div>
 
     <div class="ad-embed">
@@ -485,10 +489,20 @@
 
     <div class="notes-box">
       <div class="note-card">
-        <h4>The Butterfly Motif: Project Glasswing &amp; Greta Oto</h4>
-        <p>Anthropic named its internal advanced cybersecurity and vulnerability tracking program <strong>Project Glasswing</strong>, drawing directly from the glasswing butterfly, <em>Greta oto</em>. Fable 5 (publicly deployed) and Mythos 5 (accessible under strict clearances) represent the dual prongs of this model ecosystem.</p>
+        <h4>What Project Glasswing Actually Is</h4>
+        <p>Glasswing is not a name for the Fable/Mythos split — it's Anthropic's defensive-cybersecurity coalition, launched April 7, 2026, before either model existed publicly. A dozen founding partners (among them AWS, Apple, Google, Microsoft, Cisco, and the Linux Foundation) plus 40-odd organizations maintaining critical infrastructure were given access to <strong>Claude Mythos Preview</strong>, an unreleased frontier model, to hunt zero-day vulnerabilities across every major operating system and browser before adversaries could.</p>
+      </div>
+      <div class="note-card">
+        <h4>One Weight Set, Two Doors</h4>
+        <p>Fable 5 and Mythos 5 — launched June 9, 2026 — share the same underlying model, context window, and pricing. Fable 5 is the generally available sibling, carrying safety classifiers that can decline high-risk requests; Mythos 5 drops those classifiers and is offered only by invitation, alongside Mythos Preview, for the defensive work Glasswing exists to do. The project's namesake, <em>Greta oto</em>, plays on that same duality — transparent wings that let vulnerabilities hide in plain sight, and the transparency Anthropic says the work is meant to bring.</p>
+      </div>
+      <div class="note-card">
+        <h4>Nineteen Days</h4>
+        <p>On June 12, 2026, three days after launch, the U.S. Department of Commerce ordered Anthropic to suspend all access to Fable 5 and Mythos 5 for foreign nationals worldwide, citing a reported jailbreak technique. Unable to verify nationality in real time, Anthropic disabled both models for every user while disputing the severity of the finding. Mythos 5 returned to vetted U.S. organizations on June 26; the controls were lifted entirely on June 30; both models were back — Fable 5 globally, Mythos 5 by invitation — on July 1, 2026.</p>
       </div>
     </div>
+
+    <div class="signoff">Sources: anthropic.com/glasswing · anthropic.com/news/fable-mythos-access · platform.claude.com/docs</div>
   </div>
 
   <div class="panel" id="panel-4">
@@ -549,6 +563,45 @@
     </div>
 
     <div class="c-section">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+        <span class="dot openai"></span>
+        <span style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.6;">cross-lineage · GPT</span>
+      </div>
+      <h3>Addendum — A Second Route to the Same Stack</h3>
+      <p class="obs-intro">This surfaced in a separate exchange, not the roundtable above — a conversation about whether latent space deserves to be called "maximum ambiguity." GPT's answer was no: a latent space is optimized for structure under compression, not for ambiguity, and the sharper quantity is an information bottleneck, where the latent carries far less about the input than the input carries about itself:</p>
+      <div class="math-block">I(X;Z) &lt;&lt; H(X)</div>
+      <p class="obs-intro">Asked to reconcile that against a second five-stage schema — Observation → Attention → Compression → Identity → Resolution — most of it snapped onto the Ω-stack above without needing to be rebuilt:</p>
+
+      <div class="obs-list openai">
+        <div class="obs-item">
+          <div class="obs-num">O</div>
+          <div class="obs-body"><span class="lead">Observation ↔ Ω₁.</span> Same object, same place in the sequence — raw flux before anything has been separated out.</div>
+        </div>
+        <div class="obs-item">
+          <div class="obs-num">A</div>
+          <div class="obs-body"><span class="lead">Attention ↔ Ω₂ + half of Ω₃.</span> Absorbs the a priori structure and the differential itself into one stage, with no independent slot for network topology or inductive bias. The one place the two schemes don't actually superimpose.</div>
+        </div>
+        <div class="obs-item">
+          <div class="obs-num">C</div>
+          <div class="obs-body"><span class="lead">Compression ↔ Ω₃, second half.</span> SVD(J) again, stated the same way: principal directions kept, the rest discarded.</div>
+        </div>
+        <div class="obs-item">
+          <div class="obs-num">I</div>
+          <div class="obs-body"><span class="lead">Identity ↔ Ω₄.</span> The same corrective Tab II already made here, reached on its own: not maximum ambiguity — a controlled, temperature-governed manifold of coexisting interpretations.</div>
+        </div>
+        <div class="obs-item">
+          <div class="obs-num">R</div>
+          <div class="obs-body"><span class="lead">Resolution ↔ Ω₅.</span> The same hard collapse. One worldline selected, the rest discarded.</div>
+        </div>
+      </div>
+
+      <div class="pushback-box">
+        <span class="tag">recurring caveat</span>
+        <p>The metaphor Tab II already caught here shows up again: attention isn't literally a Jacobian — it's a similarity score between query and key vectors, not a partial derivative of output with respect to input. That's not just cosmetic. It's the reason the two schemes don't fully superimpose: treating attention as the sensitivity field itself leaves nowhere for Ω₂'s a priori structure — the inductive bias that produces that field in the first place — to live as its own stage.</p>
+      </div>
+    </div>
+
+    <div class="c-section">
       <h3>One-Line Pentadic Compression</h3>
       <p style="font-size:17px; font-family:var(--serif); line-height:1.6; padding-left:14px; border-left:2.5px solid var(--ukubona);">
         The Jacobian decomposes reality into directions; SoftMax turns those directions into a thermodynamic field of interpretation; ArgMax crystallizes one worldline from that field.
@@ -572,4 +625,3 @@
 </script>
 </body>
 </html>
- 
